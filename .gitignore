@@ -10,3 +10,4 @@ dist/
 zbar-*/
 zbar-*.tar.gz
 undecaf-*.tgz
+.DS_Store

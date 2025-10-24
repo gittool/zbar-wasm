@@ -1,4 +1,4 @@
-export default interface ZBarInstance extends Record<string, WebAssembly.ExportValue | ArrayBuffer> {
+export default interface ZBarInstance extends Record<string, any> {
   _malloc(size: number): number
   _free(ptr: number): void
 

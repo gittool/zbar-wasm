@@ -1,10 +1,11 @@
-import path from 'path'
 import copy from 'rollup-plugin-copy'
-import ts from 'rollup-plugin-ts'
+import typescript from '@rollup/plugin-typescript'
 import { importMetaAssets } from '@web/rollup-plugin-import-meta-assets'
 import { nodeResolve } from '@rollup/plugin-node-resolve'
 import { namedBuildConfigs } from '../build/buildConfigs.js'
 import { repositoryPort } from './ports.js';
+import { dirname, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
 
 const
     {
@@ -24,9 +25,21 @@ const
     ZBAR_WASM_REPOSITORY = `http://localhost:${repositoryPort}`,
     ZBAR_WASM = `node_modules/${ZBAR_WASM_PKG_NAME}/dist/zbar.wasm`;
 
-const tsconfig = (module) => (resolvedConfig) => (
-    { ...resolvedConfig, module }
-)
+const __dirname = dirname(fileURLToPath(import.meta.url))
+const tsconfigPath = resolve(__dirname, 'tsconfig.json')
+const moduleMap = {
+    esm: 'ESNext',
+    commonjs: 'CommonJS',
+    es2015: 'ES2015',
+}
+
+const tsPlugin = (moduleKey) => typescript({
+    tsconfig: tsconfigPath,
+    compilerOptions: {
+        module: moduleMap[moduleKey] ?? moduleKey,
+        target: 'ES2018',
+    },
+})
 
 export default [
     // Node ES module with zbar.wasm bundled
@@ -40,9 +53,7 @@ export default [
             format: 'esm',
         },
         plugins: [
-            ts({
-                tsconfig: tsconfig('esm')
-            }),
+            tsPlugin('esm'),
             nodeResolve(),
             importMetaAssets(),
         ],
@@ -59,9 +70,7 @@ export default [
             format: 'esm',
         },
         plugins: [
-            ts({
-                tsconfig: tsconfig('esm')
-            }),
+            tsPlugin('esm'),
             nodeResolve({
                 // Resolves to the zbar-wasm module that has file zbar.wasm inlined
                 exportConditions: ['zbar-inlined']
@@ -80,9 +89,7 @@ export default [
             format: 'cjs',
         },
         plugins: [
-            ts({
-                tsconfig: tsconfig('commonjs')
-            }),
+            tsPlugin('commonjs'),
             nodeResolve(),
 
             // zbar.wasm must be copied explicitly for CommonJS targets
@@ -105,9 +112,7 @@ export default [
             format: 'cjs',
         },
         plugins: [
-            ts({
-                tsconfig: tsconfig('commonjs')
-            }),
+            tsPlugin('commonjs'),
             nodeResolve({
                 // Resolves to the zbar-wasm module that has file zbar.wasm inlined
                 exportConditions: ['zbar-inlined']
@@ -129,9 +134,7 @@ export default [
             },
         },
         plugins: [
-            ts({
-                tsconfig: tsconfig('esm')
-            }),
+            tsPlugin('esm'),
             nodeResolve(),
 
             // Copy test fixtures
@@ -156,9 +159,7 @@ export default [
             format: 'esm',
         },
         plugins: [
-            ts({
-                tsconfig: tsconfig('esm')
-            }),
+            tsPlugin('esm'),
             nodeResolve(),
             importMetaAssets(),
 
@@ -183,9 +184,7 @@ export default [
             format: 'esm',
         },
         plugins: [
-            ts({
-                tsconfig: tsconfig('esm')
-            }),
+            tsPlugin('esm'),
             nodeResolve({
                 // Resolves to the zbar-wasm module that has file zbar.wasm inlined
                 exportConditions: ['zbar-inlined']
@@ -218,9 +217,7 @@ export default [
             },
         },
         plugins: [
-            ts({
-                tsconfig: tsconfig('es2015')
-            }),
+            tsPlugin('es2015'),
             nodeResolve(),
 
             // Copy test fixtures
@@ -244,9 +241,7 @@ export default [
             format: 'iife',
         },
         plugins: [
-            ts({
-                tsconfig: tsconfig('es2015')
-            }),
+            tsPlugin('es2015'),
             nodeResolve({
                 // Resolves to the zbar-wasm module that has file zbar.wasm inlined
                 exportConditions: ['zbar-inlined']

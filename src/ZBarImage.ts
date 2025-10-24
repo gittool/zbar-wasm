@@ -6,7 +6,7 @@ export class ZBarImage extends CppObject {
   static async createFromGrayBuffer(
     width: number,
     height: number,
-    dataBuf: ArrayBuffer,
+  dataBuf: ArrayBufferLike,
     sequence_num: number = 0
   ): Promise<ZBarImage> {
     const
@@ -34,7 +34,7 @@ export class ZBarImage extends CppObject {
   static async createFromRGBABuffer(
     width: number,
     height: number,
-    dataBuf: ArrayBuffer,
+  dataBuf: ArrayBufferLike,
     sequence_num: number = 0
   ): Promise<ZBarImage> {
     const

@@ -8,12 +8,12 @@ export interface Point {
 class TypePointer {
   protected ptr: number
   protected ptr32: number
-  protected buf: ArrayBuffer
+  protected buf: ArrayBufferLike
   protected HEAP8: Int8Array
   protected HEAP32: Int32Array
   protected HEAPU32: Uint32Array
 
-  constructor(ptr: number, buf: ArrayBuffer) {
+  constructor(ptr: number, buf: ArrayBufferLike) {
     this.ptr = ptr
     this.ptr32 = ptr >> 2
     this.buf = buf
@@ -101,7 +101,7 @@ export class ZBarSymbol {
     this.quality = ptr.quality
   }
 
-  static createSymbolsFromPtr(ptr: number, buf: ArrayBuffer): Array<ZBarSymbol> {
+  static createSymbolsFromPtr(ptr: number, buf: ArrayBufferLike): Array<ZBarSymbol> {
     if (ptr == 0) return [];
 
     const set = new SymbolSetPtr(ptr, buf);

@@ -10,11 +10,11 @@ TESTS_SRC = $(wildcard ./$(TESTS)/[0123456789]*.test.ts)
 TESTS_BUILT = $(patsubst ./$(TESTS)/%.ts,./$(BUILD)/%.js,$(TESTS_SRC))
 TESTS_COVERAGE = ./coverage
 
-EM_VERSION = 3.1.44
+EM_VERSION = 3.1.70
 EM_OPTS = --rm -w /$(SRC) -v $$PWD:/$(SRC) emscripten/emsdk:$(EM_VERSION)
 EM_DOCKER = docker run -u $(shell id -u):$(shell id -g) $(EM_OPTS)
 EM_PODMAN = podman run $(EM_OPTS)
-EM_ENGINE = $(EM_PODMAN)
+EM_ENGINE = $(EM_DOCKER)
 
 # See https://emscripten.org/docs/tools_reference/emcc.html
 EMCC = $(EM_ENGINE) emcc
@@ -23,12 +23,14 @@ EMCONFIG = $(EM_ENGINE) emconfigure
 
 ZBAR_DEPS = $(ZBAR_SRC)/make.done
 ZBAR_OBJS = $(ZBAR_SRC)/zbar/*.o $(ZBAR_SRC)/zbar/*/*.o
-ZBAR_INC = -I $(ZBAR_SRC)/include/ -I $(ZBAR_SRC)/
+ZBAR_INC = -I $(ZBAR_SRC)/ -I $(ZBAR_SRC)/include/
 
 # See https://github.com/emscripten-core/emscripten/blob/main/src/settings.js
+# Note: ALLOW_MEMORY_GROWTH required for Node.js 22 compatibility
 EMCC_FLAGS = -Oz -Wall -Werror -s ALLOW_MEMORY_GROWTH=1 \
 	-s EXPORTED_FUNCTIONS="['_malloc','_free']" \
-	-s MODULARIZE=1 -s EXPORT_NAME=zbarWasm
+	-s MODULARIZE=1 -s EXPORT_NAME=zbarWasm \
+	-s INITIAL_MEMORY=16777216
 
 LOADERS = $(BUILD)/zbar.js $(BUILD)/zbar.mjs $(BUILD)/zbar-inlined.js $(BUILD)/zbar-inlined.mjs
 

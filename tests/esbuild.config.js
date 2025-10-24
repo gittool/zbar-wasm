@@ -1,9 +1,14 @@
-import tsconfig from './tsconfig.json' assert { type: 'json' }
+import { readFileSync } from 'node:fs'
+import { dirname, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import esbuild from 'esbuild'
 import { copy } from 'esbuild-plugin-copy'
 import { globalExternals } from '@fal-works/esbuild-plugin-global-externals'
 import { namedBuildConfigs } from '../build/buildConfigs.js'
 import { repositoryPort } from './ports.js';
+
+const tsconfigUrl = resolve(dirname(fileURLToPath(import.meta.url)), 'tsconfig.json')
+const tsconfig = JSON.parse(readFileSync(tsconfigUrl, 'utf8'))
 
 const
     {
