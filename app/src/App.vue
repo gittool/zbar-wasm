@@ -3,7 +3,7 @@
     <header class="app-header">
       <div>
         <h1>zbar-wasm Scanner</h1>
-        <p>QRコードとCodabarをシームレスに読み取り</p>
+        <p>多種類のバーコード/QRコードをシームレスに読み取り</p>
       </div>
       <button class="install-hint" @click="promptInstall" v-if="deferredPrompt">
         アプリをインストール

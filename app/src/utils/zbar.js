@@ -7,10 +7,26 @@ import {
 } from '@dist/index.mjs';
 import wasmUrl from '@dist/zbar.wasm?url';
 
-const SUPPORTED_TYPES = new Set([
+const ENABLED_SYMBOL_TYPES = [
+  ZBarSymbolType.ZBAR_CODE39,
+  ZBarSymbolType.ZBAR_CODE93,
+  ZBarSymbolType.ZBAR_CODE128,
+  ZBarSymbolType.ZBAR_CODABAR,
+  ZBarSymbolType.ZBAR_DATABAR,
+  ZBarSymbolType.ZBAR_DATABAR_EXP,
+  ZBarSymbolType.ZBAR_EAN5,
+  ZBarSymbolType.ZBAR_EAN8,
+  ZBarSymbolType.ZBAR_EAN13,
+  ZBarSymbolType.ZBAR_ISBN10,
+  ZBarSymbolType.ZBAR_ISBN13,
+  ZBarSymbolType.ZBAR_ADDON2,
+  ZBarSymbolType.ZBAR_ADDON5,
+  ZBarSymbolType.ZBAR_I25,
   ZBarSymbolType.ZBAR_QRCODE,
-  ZBarSymbolType.ZBAR_CODABAR
-]);
+  ZBarSymbolType.ZBAR_UPCA
+];
+
+const SUPPORTED_TYPES = new Set(ENABLED_SYMBOL_TYPES);
 
 setModuleArgs({
   locateFile: (file) => {
@@ -28,8 +44,9 @@ async function ensureScanner() {
     scannerPromise = (async () => {
       const scanner = await getDefaultScanner();
       scanner.setConfig(ZBarSymbolType.ZBAR_NONE, ZBarConfigType.ZBAR_CFG_ENABLE, 0);
-      scanner.setConfig(ZBarSymbolType.ZBAR_QRCODE, ZBarConfigType.ZBAR_CFG_ENABLE, 1);
-      scanner.setConfig(ZBarSymbolType.ZBAR_CODABAR, ZBarConfigType.ZBAR_CFG_ENABLE, 1);
+      for (const type of ENABLED_SYMBOL_TYPES) {
+        scanner.setConfig(type, ZBarConfigType.ZBAR_CFG_ENABLE, 1);
+      }
       scanner.enableCache(true);
       return scanner;
     })();

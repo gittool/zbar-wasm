@@ -24,7 +24,7 @@
 
     <div v-else class="empty-state">
       <p>まだスキャン履歴がありません。</p>
-      <p>QRコードまたはCodabarを読み取ると表示されます。</p>
+      <p>バーコードやQRコードを読み取るとここに表示されます。</p>
     </div>
   </section>
 </template>
