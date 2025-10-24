@@ -12,18 +12,18 @@ const ENABLED_SYMBOL_TYPES = [
   ZBarSymbolType.ZBAR_CODE93,
   ZBarSymbolType.ZBAR_CODE128,
   ZBarSymbolType.ZBAR_CODABAR,
-  ZBarSymbolType.ZBAR_DATABAR,
-  ZBarSymbolType.ZBAR_DATABAR_EXP,
-  ZBarSymbolType.ZBAR_EAN5,
-  ZBarSymbolType.ZBAR_EAN8,
+  //ZBarSymbolType.ZBAR_DATABAR,
+  //ZBarSymbolType.ZBAR_DATABAR_EXP,
+  //ZBarSymbolType.ZBAR_EAN5,
+  //ZBarSymbolType.ZBAR_EAN8,
   ZBarSymbolType.ZBAR_EAN13,
-  ZBarSymbolType.ZBAR_ISBN10,
-  ZBarSymbolType.ZBAR_ISBN13,
-  ZBarSymbolType.ZBAR_ADDON2,
-  ZBarSymbolType.ZBAR_ADDON5,
-  ZBarSymbolType.ZBAR_I25,
+  //ZBarSymbolType.ZBAR_ISBN10,
+  //ZBarSymbolType.ZBAR_ISBN13,
+  //ZBarSymbolType.ZBAR_ADDON2,
+  //ZBarSymbolType.ZBAR_ADDON5,
+  //ZBarSymbolType.ZBAR_I25,
   ZBarSymbolType.ZBAR_QRCODE,
-  ZBarSymbolType.ZBAR_UPCA
+  //ZBarSymbolType.ZBAR_UPCA
 ];
 
 const SUPPORTED_TYPES = new Set(ENABLED_SYMBOL_TYPES);
